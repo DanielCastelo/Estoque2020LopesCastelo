@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
+//13
 
 namespace ControleEstoque.Web.Controllers
 {
@@ -37,7 +38,7 @@ namespace ControleEstoque.Web.Controllers
                 }
                 else
                 {
-                    RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Home");
                 }
             }
             else
