@@ -5,7 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
-//13
+//16
 
 namespace ControleEstoque.Web.Controllers
 {
@@ -27,11 +27,11 @@ namespace ControleEstoque.Web.Controllers
                 return View(login);
             }
 
-            var achou = UsuarioModel.ValidarUsuario(login.Usuario, login.Senha);
+            var usuario = UsuarioModel.ValidarUsuario(login.Usuario, login.Senha);
 
-            if (achou)
+            if (usuario != null)
             {
-                FormsAuthentication.SetAuthCookie(login.Usuario, login.LembrarMe);
+                FormsAuthentication.SetAuthCookie(usuario.Nome, login.LembrarMe);
                 if (Url.IsLocalUrl(returnUrl))
                 {
                     return Redirect(returnUrl);

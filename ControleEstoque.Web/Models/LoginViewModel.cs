@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
-
+//16
 namespace ControleEstoque.Web.Models
 {
     public class LoginViewModel
     {
-        [Required(ErrorMessage ="Informe o usuário")]
+        [Required(ErrorMessage = "Informe o usuário")]
         [Display(Name = "Usuário:")]
         public string Usuario { get; set; }
 
