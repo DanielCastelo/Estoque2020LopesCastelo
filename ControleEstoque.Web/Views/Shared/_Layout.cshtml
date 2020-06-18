@@ -28,7 +28,7 @@
                                 <span class="caret"></span>
                             </a>
                             <ul class="dropdown-menu">
-                                <li>@Html.ActionLink("Grupos de produtos", "GrupoProduto", "Cadastro")</li>
+                                <li>@Html.ActionLink("Grupos de produtos", "Index", "CadGrupoProduto")</li>
                                 <li>@Html.ActionLink("Marcas de produtos", "MarcaProduto", "Cadastro")</li>
                                 <li>@Html.ActionLink("Locais de armazenamento", "LocalProduto", "Cadastro")</li>
                                 <li>@Html.ActionLink("Unidades de medida", "UnidadeMedida", "Cadastro")</li>
@@ -78,13 +78,11 @@
                     </ul>
                     using (Html.BeginForm("LogOff", "Conta", FormMethod.Post, new { id = "logoffForm" }))
                     {
-                    <ul class="nav navbar-nav navbar-right">
-                        <li>@Html.ActionLink("Sobre", "Sobre", "Home")</li>
-                        <li><a href="#">Olá @User.Identity.Name</a></li>
-                       
+                        <ul class="nav navbar-nav navbar-right">
+                            <li>@Html.ActionLink("Sobre", "Sobre", "Home")</li>
+                            <li><a href="#">Olá @User.Identity.Name</a></li>
                             <li><a href="javascript:document.getElementById('logoffForm').submit()">Sair</a></li>
-
-                    </ul>
+                        </ul>
                     }
                 }
                 else
