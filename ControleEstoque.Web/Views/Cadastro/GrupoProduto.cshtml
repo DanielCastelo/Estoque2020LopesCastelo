@@ -1,4 +1,4 @@
-﻿<!--15-->
+﻿<!--18-->
 @model List<ControleEstoque.Web.Models.GrupoProdutoModel>
 @{
     ViewBag.Title = "Cadastro de Grupo de Produtos";
@@ -50,21 +50,48 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach (var item in Model)
-                        {
-                            <tr data-id="@item.Id">
-                                <td>@item.Nome</td>
-                                <td>@{var ativo = (item.Ativo ? "SIM" : "NÃO");}@ativo</td>
-                                <td>
-                                    <a class="btn btn-primary btn-alterar" role="button"><i class="glyphicon glyphicon-pencil"></i> Alterar</a>
-                                    <a class="btn btn-danger btn-excluir" role="button"><i class="glyphicon glyphicon-trash"></i> Excluir</a>
-                                </td>
-                            </tr>
-                                    }
+                        @{
+                            var linha = 0;
+                            foreach (var item in Model)
+                            {
+                                linha++;
+                                if (linha <= ViewBag.QuantMaxLinhasPorPagina)
+                                {
+                                    <tr data-id="@item.Id">
+                                        <td>@item.Nome</td>
+                                        <td>@{var ativo = (item.Ativo ? "SIM" : "NÃO");}@ativo</td>
+                                        <td>
+                                            <a class="btn btn-primary btn-alterar" role="button"><i class="glyphicon glyphicon-pencil"></i> Alterar</a>
+                                            <a class="btn btn-danger btn-excluir" role="button"><i class="glyphicon glyphicon-trash"></i> Excluir</a>
+                                        </td>
+                                    </tr>
+                                                }
+                                                else
+                                                {
+                                                    break;
+                                                }
+                                            }
+                        }
                     </tbody>
                 </table>
             </div>
         </div>
+        @if (ViewBag.QuantPaginas > 1)
+        {
+            <div class="row">
+                <div class="col-md-12">
+                    <nav>
+                        <ul class="pagination">
+                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                            @for (int i = 2; i <= ViewBag.QuantPaginas; i++)
+                            {
+                                <li class="page-item"><a class="page-link" href="#">@i</a></li>
+                            }
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        }
     </section>
 </div>
 @Html.Hidden("id_cadastro")
@@ -217,6 +244,22 @@
                     $('#msg_aviso').show();
                     $('#msg_mensagem_aviso').show();
                     $('#msg_erro').hide();
+                }
+            });
+        })
+        .on('click', '.page-item', function () {
+            var btn = $(this),
+                pagina = btn.text(),
+                url = '@Url.Action("GrupoProdutoPagina", "Cadastro")';
+            $.post(url, add_anti_forgery_token({ pagina }), function (response) {
+                if (response) {
+                    var table = $('#grid_cadastro').find('tbody');
+                    table.empty();
+                    for (var i = 0; i < response.length; i++) {
+                        table.append(criar_linha_grid(response[i]));
+                    }
+                    btn.siblings().removeClass('active');
+                    btn.addClass('active');
                 }
             });
         });
