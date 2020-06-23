@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-//21
+//24
 namespace ControleEstoque.Web.Controllers
 {
     public class CadastroController : Controller
@@ -19,12 +19,6 @@ namespace ControleEstoque.Web.Controllers
 
         [Authorize]
         public ActionResult LocalProduto()
-        {
-            return View();
-        }
-
-        [Authorize]
-        public ActionResult UnidadeMedida()
         {
             return View();
         }
@@ -59,10 +53,5 @@ namespace ControleEstoque.Web.Controllers
             return View();
         }
 
-        [Authorize]
-        public ActionResult PerfilUsuario()
-        {
-            return View();
-        }
     }
 }
