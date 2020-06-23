@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
-//24
+//25
 namespace ControleEstoque.Web.Controllers
 {
     [Authorize(Roles = "Gerente")]
@@ -14,7 +14,6 @@ namespace ControleEstoque.Web.Controllers
 
         public ActionResult Index()
         {
-            ViewBag.ListaPerfil = PerfilModel.RecuperarListaAtivos();
             ViewBag.SenhaPadrao = _senhaPadrao;
             ViewBag.ListaTamPag = new SelectList(new int[] { _quantMaxLinhasPorPagina, 10, 15, 20 }, _quantMaxLinhasPorPagina);
             ViewBag.QuantMaxLinhasPorPagina = _quantMaxLinhasPorPagina;

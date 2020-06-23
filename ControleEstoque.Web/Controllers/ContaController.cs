@@ -5,7 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Web.Security;
-//23
+//25
 
 namespace ControleEstoque.Web.Controllers
 {
@@ -33,7 +33,7 @@ namespace ControleEstoque.Web.Controllers
             {
                 //FormsAuthentication.SetAuthCookie(usuario.Nome, login.LembrarMe);
                 var tiket = FormsAuthentication.Encrypt(new FormsAuthenticationTicket(
-                    1, usuario.Nome, DateTime.Now, DateTime.Now.AddHours(12), login.LembrarMe, PerfilModel.RecuperarPeloId(usuario.IdPerfil).Nome));
+                    1, usuario.Nome, DateTime.Now, DateTime.Now.AddHours(12), login.LembrarMe, usuario.RecuperarStringNomePerfis()));
                 var cookie = new HttpCookie(FormsAuthentication.FormsCookieName, tiket);
                 Response.Cookies.Add(cookie); if (Url.IsLocalUrl(returnUrl))
                 {
