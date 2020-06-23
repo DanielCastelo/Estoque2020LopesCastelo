@@ -29,9 +29,9 @@ namespace ControleEstoque.Web.Controllers.Cadastro
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public JsonResult PerfilPagina(int pagina, int tamPag)
+        public JsonResult PerfilPagina(int pagina, int tamPag, string filtro)
         {
-            var lista = PerfilModel.RecuperarLista(pagina, tamPag);
+            var lista = PerfilModel.RecuperarLista(pagina, tamPag, filtro);
 
             return Json(lista);
         }
@@ -54,7 +54,7 @@ namespace ControleEstoque.Web.Controllers.Cadastro
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public JsonResult SalvarPerfil(PerfilModel model)
+        public JsonResult SalvarPerfil(PerfilModel model, List<int> idUsuarios)
         {
             var resultado = "OK";
             var mensagens = new List<string>();
@@ -67,6 +67,19 @@ namespace ControleEstoque.Web.Controllers.Cadastro
             }
             else
             {
+                model.Usuarios = new List<UsuarioModel>();
+                if (idUsuarios == null || idUsuarios.Count == 0)
+                {
+                    model.Usuarios.Add(new UsuarioModel() { Id = -1 });
+                }
+                else
+                {
+                    foreach (var id in idUsuarios)
+                    {
+                        model.Usuarios.Add(new UsuarioModel() { Id = id });
+                    }
+                }
+
                 try
                 {
                     var id = model.Salvar();

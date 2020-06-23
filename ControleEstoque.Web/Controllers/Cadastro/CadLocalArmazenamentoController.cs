@@ -28,7 +28,7 @@ namespace ControleEstoque.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public JsonResult LocalArmazenamentoPagina(int pagina, int tamPag)
+        public JsonResult LocalArmazenamentoPagina(int pagina, int tamPag, string filtro)
         {
             var lista = LocalArmazenamentoModel.RecuperarLista(pagina, tamPag);
 

@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Configuration;
 using System.Data;
 using System.Data.SqlClient;
-
+//30
 namespace ControleEstoque.Web.Models
 {
     public class PerfilModel
@@ -42,7 +42,7 @@ namespace ControleEstoque.Web.Models
             return ret;
         }
 
-        public static List<PerfilModel> RecuperarLista(int pagina, int tamPagina)
+        public static List<PerfilModel> RecuperarLista(int pagina, int tamPagina, string filtro = "")
         {
             var ret = new List<PerfilModel>();
 
@@ -54,10 +54,19 @@ namespace ControleEstoque.Web.Models
                 {
                     var pos = (pagina - 1) * tamPagina;
 
+                    var filtroWhere = "";
+                    if (!string.IsNullOrEmpty(filtro))
+                    {
+                        filtroWhere = string.Format(" where lower(nome) like '%{0}%'", filtro.ToLower());
+                    }
 
                     comando.Connection = conexao;
                     comando.CommandText = string.Format(
-                        "select * from perfil order by nome offset {0} rows fetch next {1} rows only",
+                        "select *" +
+                        " from perfil" +
+                        filtroWhere +
+                        " order by nome" +
+                        " offset {0} rows fetch next {1} rows only",
                         pos > 0 ? pos - 1 : 0, tamPagina);
                     var reader = comando.ExecuteReader();
                     while (reader.Read())
@@ -201,32 +210,71 @@ namespace ControleEstoque.Web.Models
             {
                 conexao.ConnectionString = ConfigurationManager.ConnectionStrings["principal"].ConnectionString;
                 conexao.Open();
-                using (var comando = new SqlCommand())
+
+                using (var transacao = conexao.BeginTransaction())
                 {
-                    comando.Connection = conexao;
-
-                    if (model == null)
+                    using (var comando = new SqlCommand())
                     {
-                        comando.CommandText = "insert into perfil (nome, ativo) values (@nome, @ativo); select convert(int, scope_identity())";
+                        comando.Connection = conexao;
+                        comando.Transaction = transacao;
 
-                        comando.Parameters.Add("@nome", SqlDbType.VarChar).Value = this.Nome;
-                        comando.Parameters.Add("@ativo", SqlDbType.VarChar).Value = (this.Ativo ? 1 : 0);
-
-                        ret = (int)comando.ExecuteScalar();
-                    }
-                    else
-                    {
-                        comando.CommandText = "update perfil set nome=@nome, ativo=@ativo where id = @id";
-
-                        comando.Parameters.Add("@nome", SqlDbType.VarChar).Value = this.Nome;
-                        comando.Parameters.Add("@ativo", SqlDbType.VarChar).Value = (this.Ativo ? 1 : 0);
-                        comando.Parameters.Add("@id", SqlDbType.Int).Value = this.Id;
-
-                        if (comando.ExecuteNonQuery() > 0)
+                        if (model == null)
                         {
-                            ret = this.Id;
+                            comando.CommandText = "insert into perfil (nome, ativo) values (@nome, @ativo); select convert(int, scope_identity())";
+
+                            comando.Parameters.Add("@nome", SqlDbType.VarChar).Value = this.Nome;
+                            comando.Parameters.Add("@ativo", SqlDbType.VarChar).Value = (this.Ativo ? 1 : 0);
+
+                            ret = (int)comando.ExecuteScalar();
+                        }
+                        else
+                        {
+                            comando.CommandText = "update perfil set nome=@nome, ativo=@ativo where id = @id";
+
+                            comando.Parameters.Add("@nome", SqlDbType.VarChar).Value = this.Nome;
+                            comando.Parameters.Add("@ativo", SqlDbType.VarChar).Value = (this.Ativo ? 1 : 0);
+                            comando.Parameters.Add("@id", SqlDbType.Int).Value = this.Id;
+
+                            if (comando.ExecuteNonQuery() > 0)
+                            {
+                                ret = this.Id;
+                            }
                         }
                     }
+
+                    if (this.Usuarios != null && this.Usuarios.Count > 0)
+                    {
+                        using (var comandoExclusaoPerfilUsuario = new SqlCommand())
+                        {
+                            comandoExclusaoPerfilUsuario.Connection = conexao;
+                            comandoExclusaoPerfilUsuario.Transaction = transacao;
+
+                            comandoExclusaoPerfilUsuario.CommandText = "delete from perfil_usuario where (id_perfil = @id_perfil)";
+                            comandoExclusaoPerfilUsuario.Parameters.Add("@id_perfil", SqlDbType.Int).Value = this.Id;
+
+                            comandoExclusaoPerfilUsuario.ExecuteScalar();
+                        }
+
+                        if (this.Usuarios[0].Id != -1)
+                        {
+                            foreach (var usuario in this.Usuarios)
+                            {
+                                using (var usuarioInclusaoPerfilUsuario = new SqlCommand())
+                                {
+                                    usuarioInclusaoPerfilUsuario.Connection = conexao;
+                                    usuarioInclusaoPerfilUsuario.Transaction = transacao;
+
+                                    usuarioInclusaoPerfilUsuario.CommandText = "insert into perfil_usuario (id_perfil, id_usuario) values (@id_perfil, @id_usuario)";
+                                    usuarioInclusaoPerfilUsuario.Parameters.Add("@id_perfil", SqlDbType.Int).Value = this.Id;
+                                    usuarioInclusaoPerfilUsuario.Parameters.Add("@id_usuario", SqlDbType.Int).Value = usuario.Id;
+
+                                    usuarioInclusaoPerfilUsuario.ExecuteScalar();
+                                }
+                            }
+                        }
+                    }
+
+                    transacao.Commit();
                 }
             }
 

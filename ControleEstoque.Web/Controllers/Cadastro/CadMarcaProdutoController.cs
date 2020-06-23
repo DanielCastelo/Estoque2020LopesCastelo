@@ -28,9 +28,9 @@ namespace ControleEstoque.Web.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public JsonResult MarcaProdutoPagina(int pagina, int tamPag)
+        public JsonResult MarcaProdutoPagina(int pagina, int tamPag, string filtro)
         {
-            var lista = MarcaProdutoModel.RecuperarLista(pagina, tamPag);
+            var lista = MarcaProdutoModel.RecuperarLista(pagina, tamPag, filtro);
 
             return Json(lista);
         }
@@ -39,8 +39,8 @@ namespace ControleEstoque.Web.Controllers
         [ValidateAntiForgeryToken]
         public JsonResult RecuperarMarcaProduto(int id)
         {
-            return Json(false);
-            //return Json(MarcaProdutoModel.RecuperarPeloId(id));
+           // return Json(false);
+            return Json(MarcaProdutoModel.RecuperarPeloId(id));
         }
 
         [HttpPost]
