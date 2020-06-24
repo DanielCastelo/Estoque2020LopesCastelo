@@ -1,4 +1,4 @@
-﻿﻿function set_dados_form(dados) {
+﻿function set_dados_form(dados) {
     $('#id_cadastro').val(dados.Id);
     $('#txt_nome').val(dados.Nome);
     $('#ddl_pais').val(dados.IdPais);
@@ -11,7 +11,6 @@
 function set_focus_form() {
     $('#txt_nome').focus();
 }
-
 
 function get_dados_inclusao() {
     return {
@@ -49,15 +48,15 @@ $(document).on('change', '#ddl_pais', function () {
             param = { idPais: id_pais };
 
         ddl_estado.empty();
-        $('#ddl_estado').prop('disabled', true);
+        ddl_estado.prop('disabled', true);
 
         $.post(url, add_anti_forgery_token(param), function (response) {
             if (response && response.length > 0) {
                 for (var i = 0; i < response.length; i++) {
                     ddl_estado.append('<option value=' + response[i].Id + '>' + response[i].Nome + '</option>');
                 }
-                $('#ddl_estado').prop('disabled', false);
+                ddl_estado.prop('disabled', false);
             }
         });
     }
-}); 
+});
