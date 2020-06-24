@@ -1,8 +1,9 @@
-﻿<!--27-->
-@{
+﻿@{
     Layout = "~/Views/Shared/_Layout.cshtml";
+
     var lista = ViewBag.Lista;
     var titulo = ViewBag.Title;
+
     ViewBag.Title = "Cadastro de " + ViewBag.Title;
 }
 
@@ -38,7 +39,6 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @RenderSection("LinhaGrid", true)
                     </tbody>
                 </table>
                 <div id="mensagem_grid" @Html.Raw(lista != null && lista.Count > 0 ? "class=\"invisivel\"" : "")>
@@ -85,6 +85,7 @@
     </fieldset>
 </div>
 @section Scripts{
+    <script src="~/Scripts/mustache.min.js"></script>
     <script src="~/Scripts/Cadastro/CadBase.js"></script>
     @RenderSection("Scripts", true)
 }
