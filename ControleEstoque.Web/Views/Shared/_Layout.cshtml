@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title Estoque Lopes & Castelo</title>
+    <title>@ViewBag.Title - Controle de Estoque</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     <link href="~/Content/sweetalert2.min.css" rel="stylesheet" />
@@ -81,7 +81,15 @@
                     {
                         <ul class="nav navbar-nav navbar-right">
                             <li>@Html.ActionLink("Sobre", "Sobre", "Home")</li>
-                            <li><a href="#">Olá @User.Identity.Name</a></li>
+                            <li>
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                    @User.Identity.Name
+                                    <span class="caret"></span>
+                                </a>
+                                <ul class="dropdown-menu">
+                                    <li>@Html.ActionLink("Alteração de senha", "AlterarSenhaUsuario", "Conta")</li>
+                                </ul>
+                            </li>
                             <li><a href="javascript:document.getElementById('logoffForm').submit()">Sair</a></li>
                         </ul>
                     }

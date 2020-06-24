@@ -146,6 +146,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AplicacaoPrincipal.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
@@ -169,6 +170,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Helpers\CriptoHelper.cs" />
+    <Compile Include="Models\AlteracaoSenhaUsuarioViewModel.cs" />
     <Compile Include="Models\CidadeModel.cs" />
     <Compile Include="Models\EstadoModel.cs" />
     <Compile Include="Models\FornecedorModel.cs" />
@@ -279,6 +281,7 @@
     <Content Include="Views\CadEstado\Index.cshtml" />
     <Content Include="Views\CadPais\Index.cshtml" />
     <Content Include="Views\CadFornecedor\Index.cshtml" />
+    <Content Include="Views\Conta\AlterarSenhaUsuario.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

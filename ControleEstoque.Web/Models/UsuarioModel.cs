@@ -72,7 +72,7 @@ namespace ControleEstoque.Web.Models
             return ret;
         }
 
-        public static List<UsuarioModel> RecuperarLista(int pagina = -1, int tamPagina = -1, string filtro = "")
+        public static List<UsuarioModel> RecuperarLista(int pagina = -1, int tamPagina = -1)
         {
             var ret = new List<UsuarioModel>();
 
@@ -83,25 +83,17 @@ namespace ControleEstoque.Web.Models
                 using (var comando = new SqlCommand())
                 {
                     var pos = (pagina - 1) * tamPagina;
-                    var filtroWhere = "";
-                    if (!string.IsNullOrEmpty(filtro))
-                    {
-                        filtroWhere = string.Format(" where lower(nome) like '%{0}%'", filtro.ToLower());
-                    }
+
                     comando.Connection = conexao;
 
                     if (pagina == -1 || tamPagina == -1)
                     {
-                        comando.CommandText = "select * from usuario " + filtroWhere + " order by nome";
+                        comando.CommandText = "select * from usuario order by nome";
                     }
                     else
                     {
                         comando.CommandText = string.Format(
-                            "select *" +
-                            " from usuario" +
-                            filtroWhere +
-                            " order by nome" +
-                            " offset {0} rows fetch next {1} rows only",
+                            "select * from usuario order by nome offset {0} rows fetch next {1} rows only",
                             pos > 0 ? pos - 1 : 0, tamPagina);
                     }
 
@@ -252,6 +244,54 @@ namespace ControleEstoque.Web.Models
                     {
                         ret += (ret != string.Empty ? ";" : string.Empty) + (string)reader["nome"];
                     }
+                }
+            }
+
+            return ret;
+        }
+
+        public bool ValidarSenhaAtual(string senhaAtual)
+        {
+            var ret = false;
+
+            using (var conexao = new SqlConnection())
+            {
+                conexao.ConnectionString = ConfigurationManager.ConnectionStrings["principal"].ConnectionString;
+                conexao.Open();
+                using (var comando = new SqlCommand())
+                {
+                    comando.Connection = conexao;
+
+                    comando.CommandText = "select count(*) from usuario where senha = @senhaAtual and id = @id";
+
+                    comando.Parameters.Add("@id", SqlDbType.Int).Value = this.Id;
+                    comando.Parameters.Add("@senhaAtual", SqlDbType.VarChar).Value = CriptoHelper.HashMD5(senhaAtual);
+
+                    ret = ((int)comando.ExecuteScalar() > 0);
+                }
+            }
+
+            return ret;
+        }
+
+        public bool AlterarSenha(string novaSenha)
+        {
+            var ret = false;
+
+            using (var conexao = new SqlConnection())
+            {
+                conexao.ConnectionString = ConfigurationManager.ConnectionStrings["principal"].ConnectionString;
+                conexao.Open();
+                using (var comando = new SqlCommand())
+                {
+                    comando.Connection = conexao;
+
+                    comando.CommandText = "update usuario set senha = @senha where id = @id";
+
+                    comando.Parameters.Add("@id", SqlDbType.Int).Value = this.Id;
+                    comando.Parameters.Add("@senha", SqlDbType.VarChar).Value = CriptoHelper.HashMD5(novaSenha);
+
+                    ret = (comando.ExecuteNonQuery() > 0);
                 }
             }
 
