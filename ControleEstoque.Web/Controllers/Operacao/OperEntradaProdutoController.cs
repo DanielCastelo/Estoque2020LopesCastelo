@@ -1,6 +1,6 @@
 ﻿using ControleEstoque.Web.Models;
 using System.Web.Mvc;
-
+//41
 namespace ControleEstoque.Web.Controllers
 {
     public class OperEntradaProdutoController : Controller
@@ -10,6 +10,14 @@ namespace ControleEstoque.Web.Controllers
             ViewBag.Produtos = ProdutoModel.RecuperarLista(somenteAtivos: true);
 
             return View();
+        }
+
+        public JsonResult Salvar([ModelBinder(typeof(EntradaProdutoViewModelModelBinder))] EntradaProdutoViewModel dados)
+        {
+            var numPedido = ProdutoModel.SalvarPedidoEntrada(dados.Data, dados.Produtos);
+            var ok = (numPedido != "");
+
+            return Json(new { OK = ok, Numero = numPedido });
         }
     }
 }

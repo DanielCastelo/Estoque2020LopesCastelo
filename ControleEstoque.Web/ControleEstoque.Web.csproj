@@ -172,7 +172,9 @@
     </Compile>
     <Compile Include="Helpers\CriptoHelper.cs" />
     <Compile Include="Models\AlteracaoSenhaUsuarioViewModel.cs" />
+    <Compile Include="Models\Binders\EntradaProdutoViewModelModelBinder.cs" />
     <Compile Include="Models\CidadeModel.cs" />
+    <Compile Include="Models\EntradaProdutoViewModel.cs" />
     <Compile Include="Models\EsqueciMinhaSenhaViewModel.cs" />
     <Compile Include="Models\EstadoModel.cs" />
     <Compile Include="Models\FornecedorModel.cs" />
@@ -227,6 +229,7 @@
     <Content Include="Scripts\Cadastro\Fornecedor.js" />
     <Content Include="Scripts\Cadastro\GrupoProduto.js" />
     <Content Include="Scripts\Cadastro\Produto.js" />
+    <Content Include="Scripts\comum.js" />
     <Content Include="Scripts\jquery.mask.js" />
     <Content Include="Scripts\jquery.mask.min.js" />
     <Content Include="Scripts\Cadastro\LocalArmazenamento.js" />
@@ -291,7 +294,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Cadastro\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
