@@ -34,7 +34,7 @@ namespace ControleEstoque.Web.Models
             return ret;
         }
 
-        public static List<MarcaProdutoModel> RecuperarLista(int pagina, int tamPagina, string filtro = "")
+        public static List<MarcaProdutoModel> RecuperarLista(int pagina, int tamPagina, string ordem = "")
         {
             var ret = new List<MarcaProdutoModel>();
 
@@ -46,18 +46,11 @@ namespace ControleEstoque.Web.Models
                 {
                     var pos = (pagina - 1) * tamPagina;
 
-                    var filtroWhere = "";
-                    if (!string.IsNullOrEmpty(filtro))
-                    {
-                        filtroWhere = string.Format(" where lower(nome) like '%{0}%'", filtro.ToLower());
-                    }
-
                     comando.Connection = conexao;
                     comando.CommandText = string.Format(
                         "select *" +
                         " from marca_produto" +
-                        filtroWhere +
-                        " order by nome" +
+                        " order by " + (!string.IsNullOrEmpty(ordem) ? ordem : "nome") +
                         " offset {0} rows fetch next {1} rows only",
                         pos > 0 ? pos - 1 : 0, tamPagina);
                     var reader = comando.ExecuteReader();
