@@ -182,12 +182,14 @@
     <Compile Include="Models\EstadoModel.cs" />
     <Compile Include="Models\FornecedorModel.cs" />
     <Compile Include="Models\GrupoProdutoModel.cs" />
+    <Compile Include="Models\ItemInventarioViewModel.cs" />
     <Compile Include="Models\LocalArmazenamentoModel.cs" />
     <Compile Include="Models\LoginViewModel.cs" />
     <Compile Include="Models\MarcaProdutoModel.cs" />
     <Compile Include="Models\NovaSenhaViewModel.cs" />
     <Compile Include="Models\PaisModel.cs" />
     <Compile Include="Models\PerfilModel.cs" />
+    <Compile Include="Models\ProdutoInventarioViewModel.cs" />
     <Compile Include="Models\ProdutoModel.cs" />
     <Compile Include="Models\Tipos.cs" />
     <Compile Include="Models\UnidadeMedidaModel.cs" />
