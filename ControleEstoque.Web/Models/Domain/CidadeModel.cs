@@ -23,6 +23,9 @@ namespace ControleEstoque.Web.Models
         [Required(ErrorMessage = "Selecione o estado.")]
         public int IdEstado { get; set; }
 
+        public virtual EstadoModel Estado { get; set; }
+
+
         public static int RecuperarQuantidade()
         {
             var ret = 0;
