@@ -24,6 +24,8 @@ namespace ControleEstoque.Web.Models
         [Required(ErrorMessage = "Selecione o país.")]
         public int IdPais { get; set; }
 
+        public virtual PaisModel Pais { get; set; }
+
         public static int RecuperarQuantidade()
         {
             var ret = 0;
