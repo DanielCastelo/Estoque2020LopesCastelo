@@ -1,8 +1,6 @@
 ﻿using ControleEstoque.Web.Models;
 using System;
-using System.Collections.Generic;
 using System.Configuration;
-using System.Linq;
 using System.Net;
 using System.Net.Mail;
 using System.Web;
@@ -159,7 +157,6 @@ namespace ControleEstoque.Web.Controllers
 
             return View();
         }
-
 
         private void EnviarEmailRedefinicaoSenha(UsuarioModel usuario)
         {
